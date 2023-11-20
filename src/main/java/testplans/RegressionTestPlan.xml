@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="RegressionTestPlan" parallel="false" thread-count="3" verbose="1">
+
+   <listeners>
+      <listener class-name = "framework.listeners.CustomReportListener" />
+   </listeners>
+
+	<test name="TransationApiTest">
+		<classes>
+			<class name="testscripts.TransactionAPITest" />
+		</classes>
+	</test>
+
+	<test name="UserLoginTest">
+		<classes>
+			<class name="testscripts.UserLoginTest" />
+		</classes>
+	</test>
+
+</suite>
