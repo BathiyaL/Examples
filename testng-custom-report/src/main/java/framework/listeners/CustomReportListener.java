@@ -28,7 +28,7 @@ public class CustomReportListener implements IReporter {
 	//private static final String ROW_TEMPLATE = "<tr class=\"%s\"><td>%s</td><td>%s</td><td>%s</td><td>%s</td><td>%s</td></tr>";
 	private static final String ROW_TEMPLATE = "<tr><td>%s</td><td>%s</td><td>%s</td><td class=\"%s\">%s</td><td style=\"text-align: center; vertical-align: middle;\">%s</td></tr>";
 
-	public void generateReports(List<XmlSuite> xmlSuites, List<ISuite> suites, String outputDirectory) {
+	public void generateReport(List<XmlSuite> xmlSuites, List<ISuite> suites, String outputDirectory) {
 		String reportTemplate = initReportTemplate();
 		
 		String suiteName = suites.get(0).getName();	
