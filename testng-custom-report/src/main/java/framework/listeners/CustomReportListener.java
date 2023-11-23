@@ -24,8 +24,6 @@ public class CustomReportListener implements IReporter {
 	private static final Logger LOGGER = LoggerFactory.getLogger(CustomReportListener.class);
 	private static final String REPORT_NAME = "RegressionTest.html";
 	private static final String REPORT_FOLDER= "custom-reports";
-
-	//private static final String ROW_TEMPLATE = "<tr class=\"%s\"><td>%s</td><td>%s</td><td>%s</td><td>%s</td><td>%s</td></tr>";
 	private static final String ROW_TEMPLATE = "<tr><td>%s</td><td>%s</td><td>%s</td><td class=\"%s\">%s</td><td style=\"text-align: center; vertical-align: middle;\">%s</td></tr>";
 
 	public void generateReport(List<XmlSuite> xmlSuites, List<ISuite> suites, String outputDirectory) {
@@ -70,9 +68,7 @@ public class CustomReportListener implements IReporter {
 
 			Set<ITestResult> failedTests = testContext.getFailedTests().getAllResults();
 			Set<ITestResult> passedTests = testContext.getPassedTests().getAllResults();
-			Set<ITestResult> skippedTests = testContext.getSkippedTests().getAllResults();
-			
-			// testContext.getFailedTests().getAllMethods().getAllTestMethods()[0].getDescription();			
+			Set<ITestResult> skippedTests = testContext.getSkippedTests().getAllResults();		
 
 			String suiteName = suite.getName();
 
@@ -86,9 +82,6 @@ public class CustomReportListener implements IReporter {
 	}
 
 	private Function<ITestResult, String> testResultToResultRow(String testName, String suiteName) {
-		// testResult.getName() // test method name
-		// testResult.getMethod().getDescription() // test description
-		// testResult.getName() // test method name
 		return testResult -> {
 			
 			String fullyQualifiedName = testResult.getTestClass().getName();
