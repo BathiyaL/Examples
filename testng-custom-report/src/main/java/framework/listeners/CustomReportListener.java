@@ -19,6 +19,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static java.util.stream.Collectors.toList;
+import static org.testng.Assert.fail;
 
 public class CustomReportListener implements IReporter {
 	private static final Logger LOGGER = LoggerFactory.getLogger(CustomReportListener.class);
@@ -48,10 +49,7 @@ public class CustomReportListener implements IReporter {
 		
 		
 		final String body = suites.stream().flatMap(suiteToResults()).collect(Collectors.joining());
-		//saveReportTemplate(outputDirectory, reportTemplate.replaceFirst("</tbody>", String.format("%s</tbody>", body)));
 		saveReportTemplate(outputDirectory, reportTemplate.replace("$testResults",body));
-		
-		//saveReportTemplate(outputDirectory, reportTemplate);
 	}
 	
     protected String getReportTitle(String title) {
@@ -70,18 +68,18 @@ public class CustomReportListener implements IReporter {
 			Set<ITestResult> passedTests = testContext.getPassedTests().getAllResults();
 			Set<ITestResult> skippedTests = testContext.getSkippedTests().getAllResults();		
 
-			String suiteName = suite.getName();
+			//String suiteName = suite.getName();
 
 			return Stream.of(failedTests, passedTests, skippedTests)
-					.flatMap(results -> generateReportRows(e.getKey(), suiteName, results).stream());
+					.flatMap(results -> generateReportRows(results).stream());
 		};
 	}
 
-	private List<String> generateReportRows(String testName, String suiteName, Set<ITestResult> allTestResults) {
-		return allTestResults.stream().map(testResultToResultRow(testName, suiteName)).collect(toList());
+	private List<String> generateReportRows(Set<ITestResult> allTestResults) {
+		return allTestResults.stream().map(testResultToResultRow()).collect(toList());
 	}
 
-	private Function<ITestResult, String> testResultToResultRow(String testName, String suiteName) {
+	private Function<ITestResult, String> testResultToResultRow() {
 		return testResult -> {
 			
 			String fullyQualifiedName = testResult.getTestClass().getName();
@@ -115,7 +113,7 @@ public class CustomReportListener implements IReporter {
 			reportTemplate = Files.readAllBytes(Paths.get(resourceDirectoryPath.toUri()));
 			template = new String(reportTemplate, "UTF-8");
 		} catch (IOException e) {
-			LOGGER.error("Problem initializing template", e);
+			LOGGER.error("Error occurs while initializing report template", e);
 		}
 		return template;
 	}
@@ -132,11 +130,11 @@ public class CustomReportListener implements IReporter {
 			reportWriter.flush();
 			reportWriter.close();
 		} catch (IOException e) {
-			LOGGER.error("Problem saving template", e);
+			LOGGER.error("Error occurs while saving report template", e);
 		}
 	}
 	
-	public static String getCurrentDateTime() {
+	private static String getCurrentDateTime() {
 		Calendar currentDate = Calendar.getInstance();
 		SimpleDateFormat formatter = new SimpleDateFormat("dd-MMM-yyyy:HH.mm.ss");
 		return formatter.format(currentDate.getTime());
